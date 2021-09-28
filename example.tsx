@@ -1,3 +1,5 @@
+import { Image } from 'system'
+
 const unusedVariable = 'foo'
 
 function unusedFunction() {
@@ -9,7 +11,7 @@ export function Avatar() {
   function unusedNestedFunction() {
     return 'bar'
   }
-  return <img />
+  return <Image />
 }
 
 type GlobalProps = { as: any }

@@ -2,6 +2,8 @@
 
 exports[`unknown plugin 1. unknown plugin: 1. unknown plugin 1`] = `
 
+import { Image } from 'system'
+
 const unusedVariable = 'foo'
 
 function unusedFunction() {
@@ -13,7 +15,7 @@ export function Avatar() {
   function unusedNestedFunction() {
     return 'bar'
   }
-  return <img />
+  return <Image />
 }
 
 type GlobalProps = { as: any }
@@ -34,19 +36,10 @@ export const Button = (props: ButtonProps) => <Stack>Hello Button</Stack>
 
       ↓ ↓ ↓ ↓ ↓ ↓
 
-const unusedVariable = "foo";
-
-function unusedFunction() {
-  return "bar";
+import { Image } from "system";
+export function Avatar() {
+  return <Image />;
 }
-
-type GlobalProps = {
-  as: any;
-};
-type BoxProps = {
-  children: any;
-} & GlobalProps;
-export const Box = (props: BoxProps) => <div {...props} />;
 
 
 `;

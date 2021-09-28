@@ -1,43 +1,15 @@
 import { NodePath, PluginObj, types as BabelTypes } from '@babel/core'
 import * as t from '@babel/types'
-import type { PluginState } from './types'
-import {
-  getIdentifier,
-  isIdentifierReferenced,
-  markFunction,
-  markImport,
-  markType,
-  markVariable,
-  removeExports,
-} from './utils'
+import { PluginState } from './types'
+import { getIdentifier, isIdentifierReferenced, removeExports } from './utils'
 
-export default function (): PluginObj<PluginState> {
+export default function (_, options: PluginState): PluginObj {
   return {
     visitor: {
       Program: {
-        enter(path, state) {
-          state.refs = new Set<NodePath<BabelTypes.Identifier>>()
-          state.exportIdentifierName = 'Box'
+        enter(path) {
+          path.traverse({ ExportNamedDeclaration: removeExports }, options)
 
-          path.traverse(
-            {
-              TSTypeAliasDeclaration: markType,
-              TSInterfaceDeclaration: markType,
-              TSEnumDeclaration: markType,
-              TSModuleDeclaration: markType,
-              VariableDeclarator: markVariable,
-              FunctionDeclaration: markFunction,
-              FunctionExpression: markFunction,
-              ArrowFunctionExpression: markFunction,
-              ImportSpecifier: markImport,
-              ImportDefaultSpecifier: markImport,
-              ImportNamespaceSpecifier: markImport,
-              ExportNamedDeclaration: removeExports,
-            },
-            state
-          )
-
-          const refs = state.refs
           let count: number
 
           function sweepType(
@@ -48,7 +20,7 @@ export default function (): PluginObj<PluginState> {
               | NodePath<BabelTypes.TSModuleDeclaration>
           ) {
             const local = sweepPath.get('id') as NodePath<BabelTypes.Identifier>
-            if (refs.has(local) && !isIdentifierReferenced(local)) {
+            if (!isIdentifierReferenced(local)) {
               ++count
               sweepPath.remove()
             }
@@ -61,7 +33,7 @@ export default function (): PluginObj<PluginState> {
               const local = sweepPath.get(
                 'id'
               ) as NodePath<BabelTypes.Identifier>
-              if (refs.has(local) && !isIdentifierReferenced(local)) {
+              if (!isIdentifierReferenced(local)) {
                 ++count
                 sweepPath.remove()
               }
@@ -83,7 +55,7 @@ export default function (): PluginObj<PluginState> {
                       })()
                 ) as NodePath<BabelTypes.Identifier>
 
-                if (refs.has(local) && !isIdentifierReferenced(local)) {
+                if (!isIdentifierReferenced(local)) {
                   ++count
                   property.remove()
                 }
@@ -114,7 +86,7 @@ export default function (): PluginObj<PluginState> {
                   return
                 }
 
-                if (refs.has(local) && !isIdentifierReferenced(local)) {
+                if (!isIdentifierReferenced(local)) {
                   ++count
                   element.remove()
                 }
@@ -133,11 +105,7 @@ export default function (): PluginObj<PluginState> {
               | NodePath<BabelTypes.ArrowFunctionExpression>
           ): void {
             const identifier = getIdentifier(sweepPath)
-            if (
-              identifier?.node &&
-              refs.has(identifier) &&
-              !isIdentifierReferenced(identifier)
-            ) {
+            if (identifier?.node && !isIdentifierReferenced(identifier)) {
               ++count
 
               if (
@@ -161,7 +129,7 @@ export default function (): PluginObj<PluginState> {
               'local'
             ) as NodePath<BabelTypes.Identifier>
 
-            if (refs.has(local) && !isIdentifierReferenced(local)) {
+            if (!isIdentifierReferenced(local)) {
               ++count
               sweepPath.remove()
               if (
