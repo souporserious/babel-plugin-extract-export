@@ -1,0 +1,19 @@
+{
+  "include": ["src"],
+  "compilerOptions": {
+    "target": "es2019",
+    "module": "commonjs",
+    "strict": true,
+    "esModuleInterop": true,
+    "noImplicitAny": false,
+    "declaration": true,
+    "jsx": "preserve",
+    "rootDir": "./src",
+    "baseUrl": "./",
+    "outDir": "dist",
+    "allowSyntheticDefaultImports": true,
+    "paths": {
+      "*": ["src/*", "node_modules/*"]
+    }
+  }
+}
