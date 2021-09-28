@@ -79,7 +79,7 @@ export function isIdentifierReferenced(
 }
 
 function shouldRemoveExport(name: string, state: PluginState): boolean {
-  return name !== state.exportIdentifierName
+  return name !== state.exportName
 }
 
 export function removeExports(

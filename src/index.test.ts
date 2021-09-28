@@ -12,19 +12,19 @@ pluginTester({
     {
       fixture: '../example.tsx',
       pluginOptions: {
-        exportIdentifierName: 'Avatar',
+        exportName: 'Avatar',
       },
     },
     {
       fixture: '../example.tsx',
       pluginOptions: {
-        exportIdentifierName: 'Box',
+        exportName: 'Box',
       },
     },
     {
       fixture: '../example.tsx',
       pluginOptions: {
-        exportIdentifierName: 'Button',
+        exportName: 'Button',
       },
     },
   ],

@@ -1,3 +1,3 @@
 export type PluginState = {
-  exportIdentifierName: string
+  exportName: string
 }
