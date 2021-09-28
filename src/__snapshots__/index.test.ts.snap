@@ -18,9 +18,9 @@ export function Avatar() {
   return <Image />
 }
 
-type GlobalProps = { as: any }
+type SystemProps = { as: any }
 
-type BoxProps = { children: any } & GlobalProps
+type BoxProps = { children: any } & SystemProps
 
 export const Box = (props: BoxProps) => <div {...props} />
 
@@ -40,6 +40,97 @@ import { Image } from "system";
 export function Avatar() {
   return <Image />;
 }
+
+
+`;
+
+exports[`unknown plugin 2. unknown plugin: 2. unknown plugin 1`] = `
+
+import { Image } from 'system'
+
+const unusedVariable = 'foo'
+
+function unusedFunction() {
+  return 'bar'
+}
+
+export function Avatar() {
+  const unusedNestedVariable = 'foo'
+  function unusedNestedFunction() {
+    return 'bar'
+  }
+  return <Image />
+}
+
+type SystemProps = { as: any }
+
+type BoxProps = { children: any } & SystemProps
+
+export const Box = (props: BoxProps) => <div {...props} />
+
+const Stack = (props: { children: any; style?: any }) => <div {...props} />
+
+export function Badge(props: { children: any }) {
+  return <div {...props} />
+}
+
+interface ButtonProps {}
+
+export const Button = (props: ButtonProps) => <Stack>Hello Button</Stack>
+
+      ↓ ↓ ↓ ↓ ↓ ↓
+
+type SystemProps = {
+  as: any;
+};
+type BoxProps = {
+  children: any;
+} & SystemProps;
+export const Box = (props: BoxProps) => <div {...props} />;
+
+
+`;
+
+exports[`unknown plugin 3. unknown plugin: 3. unknown plugin 1`] = `
+
+import { Image } from 'system'
+
+const unusedVariable = 'foo'
+
+function unusedFunction() {
+  return 'bar'
+}
+
+export function Avatar() {
+  const unusedNestedVariable = 'foo'
+  function unusedNestedFunction() {
+    return 'bar'
+  }
+  return <Image />
+}
+
+type SystemProps = { as: any }
+
+type BoxProps = { children: any } & SystemProps
+
+export const Box = (props: BoxProps) => <div {...props} />
+
+const Stack = (props: { children: any; style?: any }) => <div {...props} />
+
+export function Badge(props: { children: any }) {
+  return <div {...props} />
+}
+
+interface ButtonProps {}
+
+export const Button = (props: ButtonProps) => <Stack>Hello Button</Stack>
+
+      ↓ ↓ ↓ ↓ ↓ ↓
+
+const Stack = (props: { children: any; style?: any }) => <div {...props} />;
+
+interface ButtonProps {}
+export const Button = (props: ButtonProps) => <Stack>Hello Button</Stack>;
 
 
 `;

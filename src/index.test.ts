@@ -5,11 +5,27 @@ import plugin from './index'
 
 pluginTester({
   plugin,
-  pluginOptions: {
-    exportIdentifierName: 'Avatar',
-  },
   filename: __filename,
   snapshot: true,
   babelOptions: { plugins: [[typescript, { isTSX: true }]] },
-  tests: [{ fixture: '../example.tsx' }],
+  tests: [
+    {
+      fixture: '../example.tsx',
+      pluginOptions: {
+        exportIdentifierName: 'Avatar',
+      },
+    },
+    {
+      fixture: '../example.tsx',
+      pluginOptions: {
+        exportIdentifierName: 'Box',
+      },
+    },
+    {
+      fixture: '../example.tsx',
+      pluginOptions: {
+        exportIdentifierName: 'Button',
+      },
+    },
+  ],
 })

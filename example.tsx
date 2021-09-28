@@ -14,9 +14,9 @@ export function Avatar() {
   return <Image />
 }
 
-type GlobalProps = { as: any }
+type SystemProps = { as: any }
 
-type BoxProps = { children: any } & GlobalProps
+type BoxProps = { children: any } & SystemProps
 
 export const Box = (props: BoxProps) => <div {...props} />
 
