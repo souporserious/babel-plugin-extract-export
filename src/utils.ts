@@ -168,7 +168,10 @@ function shouldRemoveExport(name: string, state: PluginState): boolean {
   return name !== state.exportIdentifierName
 }
 
-export function removeExports(path, state) {
+export function removeExports(
+  path: NodePath<BabelTypes.ExportNamedDeclaration>,
+  state: PluginState
+) {
   const specifiers = path.get('specifiers')
   if (specifiers.length) {
     specifiers.forEach((specifier) => {

@@ -1,4 +1,5 @@
 import { NodePath, PluginObj, types as BabelTypes } from '@babel/core'
+import * as t from '@babel/types'
 import type { PluginState } from './types'
 import {
   getIdentifier,
@@ -39,23 +40,33 @@ export default function (): PluginObj<PluginState> {
           const refs = state.refs
           let count: number
 
-          function sweepType(path) {
-            const local = path.get('id') as NodePath<BabelTypes.Identifier>
+          function sweepType(
+            sweepPath:
+              | NodePath<BabelTypes.TSInterfaceDeclaration>
+              | NodePath<BabelTypes.TSTypeAliasDeclaration>
+              | NodePath<BabelTypes.TSEnumDeclaration>
+              | NodePath<BabelTypes.TSModuleDeclaration>
+          ) {
+            const local = sweepPath.get('id') as NodePath<BabelTypes.Identifier>
             if (refs.has(local) && !isIdentifierReferenced(local)) {
               ++count
-              path.remove()
+              sweepPath.remove()
             }
           }
 
-          function sweepVariable(path) {
-            if (path.node.id.type === 'Identifier') {
-              const local = path.get('id') as NodePath<BabelTypes.Identifier>
+          function sweepVariable(
+            sweepPath: NodePath<BabelTypes.VariableDeclarator>
+          ) {
+            if (sweepPath.node.id.type === 'Identifier') {
+              const local = sweepPath.get(
+                'id'
+              ) as NodePath<BabelTypes.Identifier>
               if (refs.has(local) && !isIdentifierReferenced(local)) {
                 ++count
-                path.remove()
+                sweepPath.remove()
               }
-            } else if (path.node.id.type === 'ObjectPattern') {
-              const pattern = path.get(
+            } else if (sweepPath.node.id.type === 'ObjectPattern') {
+              const pattern = sweepPath.get(
                 'id'
               ) as NodePath<BabelTypes.ObjectPattern>
 
@@ -82,10 +93,10 @@ export default function (): PluginObj<PluginState> {
                 beforeCount !== count &&
                 pattern.get('properties').length < 1
               ) {
-                path.remove()
+                sweepPath.remove()
               }
-            } else if (path.node.id.type === 'ArrayPattern') {
-              const pattern = path.get(
+            } else if (sweepPath.node.id.type === 'ArrayPattern') {
+              const pattern = sweepPath.get(
                 'id'
               ) as NodePath<BabelTypes.ArrayPattern>
 
@@ -110,7 +121,7 @@ export default function (): PluginObj<PluginState> {
               })
 
               if (beforeCount !== count && pattern.get('elements').length < 1) {
-                path.remove()
+                sweepPath.remove()
               }
             }
           }
